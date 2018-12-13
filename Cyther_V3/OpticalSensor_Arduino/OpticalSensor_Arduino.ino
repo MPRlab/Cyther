@@ -1,18 +1,17 @@
 // Read and Print Photocell Analog Input
 
-// Define Constants
+// Define Constants & Pin
 #define BAUDRATE 115200
-
-// Define Pins
-int photocellPin = A1;
+#define photocellPin A9
 
 // Define Variables
 float light_reading;
-float light_voltage;
+int light_voltage;
 //unsigned long time;
 
 void setup() {
     Serial.begin(BAUDRATE);
+    pinMode(photocellPin,INPUT);
 }
 
 void loop() {
@@ -20,8 +19,8 @@ void loop() {
   //time=micros();
   // Read photocell
   light_reading=analogRead(photocellPin);
-  light_voltage=light_reading/1023;
+  //light_voltage=light_reading/1023;
   //Serial.write(time);
   //Serial.write(light_voltage);
-  Serial.print(light_voltage);
+  Serial.println(light_reading);
 }
