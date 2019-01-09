@@ -1,6 +1,7 @@
 #include "mbed.h"
 #include "arm_math.h"
 #include "arm_common_tables.h"
+#include "system_parameters.h"
 
 AnalogIn photocell(A0);
 Serial serial (USBTX, USBRX);
@@ -11,6 +12,7 @@ int main()
     uint16_t array_size=1024; //4096=2^12
     uint32_t block_size=1024;
     int time[array_size];
+    int delay;
     float32_t voltage[array_size];
     float32_t output[array_size];
     float32_t output_mag[array_size];
@@ -31,8 +33,8 @@ int main()
     for(int i=0; i<array_size; i++) {
         time[i]=t.read_us(); //microseconds since t.start
         voltage[i]=photocell.read()*5000; //millivolts
-        //voltage[i] = 1.2f*arm_sin_f32(2*3.1415926f*50*i/1000)+1; Sample 50 Hz signal
-        wait_us(14); //Delay to achieve ~44.1kHz sample rate
+        delay=time[i]-t.read_us();
+        wait_us(1000000/SAMPLE_RATE+delay); //Delay to achieve ~300Hz sample rate
         }
             
     //Compute real FFT of floating point    
